@@ -1,0 +1,28 @@
+name: Validate skills
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate skill structure and scripts
+        run: python3 scripts/validate_skills.py
+
+      - name: Check whitespace
+        run: git diff --check HEAD^
